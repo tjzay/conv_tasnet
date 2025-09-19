@@ -5,6 +5,7 @@ OLA takes the individual frames and stitches them together into continuous audio
 
 from .constants import FRAME, HOP
 import torch
+import matplotlib.pyplot as plt
 
 class FrameCutter:
     def __init__(self,frame,hop):
@@ -96,22 +97,34 @@ class OLA:
         self.write_pos = 0
         self.read_pos = 0
 
+def main():
+    FRAME, HOP = 320, 160
+    n = torch.arange(100000)
+    x = torch.sin(n)
 
-FRAME, HOP = 320, 160
-x = torch.randn(16000)
+    fc  = FrameCutter(FRAME, HOP)
+    ola = OLA(FRAME, HOP)
 
-fc  = FrameCutter(FRAME, HOP)
-ola = OLA(FRAME, HOP)
+    for i in range(0, len(x), HOP):
+        fc.push(x[i:i+HOP])
+        f = fc.pull()
+        if f is not None:
+            ola.add(f)
 
-for i in range(0, len(x), HOP):
-    fc.push(x[i:i+HOP])
-    f = fc.pull()
-    if f is not None:
-        ola.add(f)
+    y = ola.flush()
+    print(len(x))
+    print(len(y))
+    y = y[:len(x)]
+    x = x[:len(y)]
 
-y = ola.flush()
-y = y[:len(x)]
-x = x[:len(y)]
+    k = len(y)
 
-snr = 10*torch.log10((x**2).sum() / ((x-y)**2).sum().clamp_min(1e-12))
-print("SNR:", snr.item())
+    plt.figure()
+    plt.plot(n[:k],x[:k], label = 'original')
+    plt.plot(n[:k],y[:k], label = 'processed')
+    plt.legend()
+    plt.show()
+
+if __name__ == "__main__":
+    main()
+
