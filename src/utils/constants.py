@@ -14,23 +14,23 @@ L = 32 # kernel = L, stride = L//2
 # CONSTRAINT: FRAME % (L//2) == 0 for overlap-add to align with encoder. i.e. each frame produces an integer number of encoder values
 
 # number of encoder output channels (larger N is richer representation but more resources)
-N = 64
+N = 256
 
 # number of bottleneck channels after encoder before TCN (usually B=N)
-B = 64
+B = 128
 
 # number of hidden channels inside each TCN block
-H = 64
+H = 512
 
 # kernel size of depthwise convolution in each block
 P = 3
 
 # number of blocks per repeat
 # X=6 means dilations [1,2,4,8,16,32]
-X = 6
+X = 10
 
 # number of repeats
-R = 3
+R = 4
 
 # number of output sources
 C = 2
