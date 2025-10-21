@@ -17,7 +17,7 @@ def infer_one_example(
     sr=16000,
     segment_seconds=10,
     device="cpu",
-    out_dir="/Users/tobyzayontz/Documents/Uni/conv_tasnet/inference_out/second_training",
+    out_dir="/Users/tobyzayontz/Documents/Uni/conv_tasnet/inference_out/third_training",
     seed=1337,
 ):
     # --- reproducible random crop selection ---
@@ -80,5 +80,3 @@ def infer_one_example(
 if __name__ == "__main__":
     dev = "mps" if torch.backends.mps.is_available() else ("cuda" if torch.cuda.is_available() else "cpu")
     infer_one_example(device=dev, seed=1337)
-
-

@@ -17,7 +17,7 @@ L = 32 # kernel = L, stride = L//2
 N = 256
 
 # number of bottleneck channels after encoder before TCN (usually B=N)
-B = 128
+B = 256 # reduce this for memory later
 
 # number of hidden channels inside each TCN block
 H = 512
@@ -27,10 +27,10 @@ P = 3
 
 # number of blocks per repeat
 # X=6 means dilations [1,2,4,8,16,32]
-X = 10
+X = 7
 
 # number of repeats
-R = 4
+R = 3
 
 # number of output sources
 C = 2

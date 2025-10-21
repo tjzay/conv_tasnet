@@ -28,6 +28,8 @@ class Separator(nn.Module):
                 blocks.append(TCN_block(dilation=2 ** i))
         self.blocks = nn.ModuleList(blocks)
 
+        self.prelu = nn.PReLU(num_parameters=B)
+
         self.mask = nn.Conv1d(
             in_channels = B,
             out_channels = N*C,
@@ -44,6 +46,8 @@ class Separator(nn.Module):
         for blk in self.blocks:
             x, skip = blk(x)
             skip_sum = skip_sum + skip
+        
+        skip_sum = self.prelu(skip_sum)
 
         # run thru mask, sigmoid, reshape
         mask_abs = self.mask(skip_sum)
